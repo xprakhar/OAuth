@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+
+const forms = require('@tailwindcss/forms');
 module.exports = {
   content: [
     'src/**/*.tsx'
@@ -6,6 +8,6 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [forms({ strategy: 'class' })],
 }
 

@@ -1,14 +1,15 @@
 import type { Request, Response } from 'express';
 
-import 'reflect-metadata';
-import express from 'express';
-import bodyParser from 'body-parser';
-import serveStatic from 'serve-static';
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
+import 'reflect-metadata';
 import { InversifyExpressServer } from 'inversify-express-utils';
-import { container } from './inversify-container';
 import cookieParser from 'cookie-parser';
+import serveFavicon from 'serve-favicon';
+import serveStatic from 'serve-static';
+import bodyParser from 'body-parser';
+import express from 'express';
+import { container } from './inversify-container';
 
 /**
  * Normalize the assets to ensure they are returned as an array.
@@ -72,9 +73,15 @@ async function createServer() {
         heartbeat: 10 * 1000, // Keep-alive heartbeat
       }),
     );
+
+    // Serve favicon
+    app.use(serveFavicon(path.join(process.cwd(), 'shinobou.png')));
   } else {
     // Serve static files from the production build directory
-    app.use(serveStatic(path.resolve(process.cwd(), 'dist/release/browser')));
+    app.use(
+      '/assets',
+      serveStatic(path.resolve(process.cwd(), 'dist/release/browser')),
+    );
 
     // Use compression for optimizing performance
     const compression = await import('compression');

@@ -48,7 +48,10 @@ export class UserService implements IUserService {
         return false;
       }
     } catch (error) {
-      logger.log('error', (error as Error).message);
+      if (error instanceof Error) {
+        Error.captureStackTrace(error);
+        logger.log('error', `${error.message}\n\n${error.stack}`);
+      }
 
       return false;
     }

@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -12,7 +13,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist/release/browser'), // Output path for production build
     filename: '[name].[contenthash].bundle.js', // Cache-busting with content hash
-    publicPath: '/', // Ensure correct paths for assets
+    publicPath: '/assets', // Ensure correct paths for assets
     clean: true, // Clean the output directory before building
   },
   resolve: {
@@ -38,6 +39,32 @@ module.exports = {
         minifyURLs: true,
       },
     }),
+    new FaviconsWebpackPlugin({
+      logo: './shinobou.png', // svg works too!
+      mode: 'webapp', // optional can be 'webapp', 'light' or 'auto' - 'auto' by default
+      devMode: 'webapp', // optional can be 'webapp' or 'light' - 'light' by default 
+      cache: true,
+      inject: true,
+      prefix: '',
+      favicons: {
+        appName: 'OAuth',
+        appDescription:
+          'Centralized authorization server for other apps by killerz',
+        developerName: 'Prakhar Prabir',
+        developerURL: undefined, // prevent retrieving from the nearest package.json
+        background: '#ddd',
+        theme_color: '#333',
+        icons: {
+          // coast: false,
+          yandex: false,
+          appleStartup: false,
+          favicons: true,
+          android: false,
+          appleIcon: false,
+          windows: false,
+        },
+      },
+    })
   ],
   module: {
     rules: [
