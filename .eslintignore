@@ -1,0 +1,9 @@
+# Ignore generated files
+./dist/**/*
+
+# Ignore libraries/modules
+node_modules
+
+
+# Ignore Config files
+*.config.*
